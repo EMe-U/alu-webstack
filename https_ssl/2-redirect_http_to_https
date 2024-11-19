@@ -1,0 +1,13 @@
+# Redirect HTTP (port 80) to HTTPS (port 443)
+frontend http-in
+    bind *:80
+    redirect scheme https code 301 if { hdr(Host) -i www.emerance1.tech }
+
+# SSL frontend for HTTPS traffic
+frontend https-in
+    bind *:443 ssl crt /etc/haproxy/certs/www.emerance1.tech.pem
+    default_backend web-servers
+
+backend web-servers
+    server web-01 54.91.80.128:80 check
+    server web-02 54.90.94.220:80 check
